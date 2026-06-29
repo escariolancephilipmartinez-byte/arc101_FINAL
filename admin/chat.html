@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Chat — ARC101 Admin</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@600;700;800&family=Open+Sans:wght@400;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+  <link rel="stylesheet" href="../assets/css/main.css">
+</head>
+<body>
+
+<nav class="navbar">
+  <div class="container">
+    <a class="nav-brand" href="../index.html"><span class="brand-icon"><img src="../assets/img/logo.png" alt="ARC101 logo" class="brand-logo-img" onerror="this.replaceWith('🏗️')"></span><div>ARC101 <small>Readymix & Development Corp.</small></div></a>
+    <div class="nav-menu" id="navMenu">
+      <a href="dashboard.html" class="nav-link active">Admin Panel</a>
+      <a href="../logout.php" class="nav-link">Logout</a>
+    </div>
+    <button class="nav-toggle"><i class="fa fa-bars"></i></button>
+  </div>
+</nav>
+
+<div class="app-layout">
+  <aside class="sidebar" id="sidebar">
+    <div class="sidebar-logo">
+      <span class="logo-icon"><img src="../assets/img/logo.png" alt="ARC101 logo" style="height:28px;width:auto;" onerror="this.replaceWith('🏗️')"></span>
+      <div>
+        ARC101 <small>Admin Panel</small>
+      </div>
+    </div>
+    <nav class="sidebar-nav">
+      <a href="dashboard.html"     class="sidebar-link"><i class="fa fa-th-large"></i> Dashboard</a>
+      <a href="review_orders.html" class="sidebar-link"><i class="fa fa-clipboard-list"></i> Review Orders</a>
+      <a href="chat.html"          class="sidebar-link active"><i class="fa fa-comments"></i> Chat</a>
+      <a href="reports.html"       class="sidebar-link"><i class="fa fa-chart-bar"></i> Reports</a>
+      <div class="sidebar-section">System</div>
+      <a href="../index.html"      class="sidebar-link"><i class="fa fa-home"></i> View Website</a>
+    </nav>
+    <div class="sidebar-footer">
+      <a href="../logout.php" class="btn btn-ghost btn-sm" style="color:rgba(255,255,255,.7);border-color:rgba(255,255,255,.3);width:100%;justify-content:center;">Logout</a>
+    </div>
+  </aside>
+
+  <div class="app-main" style="padding:0;">
+    <div class="top-bar">
+      <div class="top-bar-left">
+        <button class="sidebar-toggle"><i class="fa fa-bars"></i></button>
+        <h4>Customer Chat</h4>
+      </div>
+    </div>
+
+    <div class="chat-layout">
+      <div class="chat-sidebar">
+        <div class="chat-sidebar-header">💬 Active Projects</div>
+        <div class="rooms-list" id="roomsList"><div class="loading-state" style="padding:2rem;"><div class="spinner"></div></div></div>
+      </div>
+
+      <div class="chat-main" id="chatMain">
+        <div class="chat-header" id="chatHeader" style="display:none;">
+          <div class="room-avatar" id="chatAvatar">?</div>
+          <div>
+            <div style="font-weight:700;font-size:.95rem;" id="chatTitle">Chat</div>
+            <div style="font-size:.78rem;color:var(--text-muted);" id="chatSubtitle"></div>
+          </div>
+        </div>
+
+        <div class="chat-messages" id="chatMessages" style="display:none;"></div>
+
+        <div class="chat-input-area" id="chatInputArea" style="display:none;">
+          <div id="attachPreview" style="display:none;padding:.5rem;background:var(--surface-alt);border-radius:var(--radius-sm);margin-bottom:.5rem;font-size:.82rem;display:flex;gap:.5rem;align-items:center;"></div>
+          <div class="chat-actions">
+            <button class="chat-action-btn" onclick="Modal.open('receiptModal')">🧾 Send Receipt</button>
+            <label class="chat-action-btn" for="attachFile">📎 Attach Doc<input type="file" id="attachFile" style="display:none;" onchange="previewAttach(this)"></label>
+            <button class="chat-action-btn" onclick="openCamera(handleCamera)">📷 Camera</button>
+            <button class="chat-action-btn" onclick="sendProgressPhoto()">📸 Progress Photo</button>
+            <button class="chat-action-btn" onclick="Modal.open('meetingModal')">📅 Schedule Meeting</button>
+          </div>
+          <div class="chat-input-row">
+            <textarea id="chatInput" class="chat-input" rows="1" placeholder="Type a message..." onkeydown="handleKey(event)"></textarea>
+            <button class="btn-send" onclick="sendMessage()"><i class="fa fa-paper-plane"></i></button>
+          </div>
+        </div>
+
+        <div id="noRoom" style="flex:1;display:flex;align-items:center;justify-content:center;">
+          <div class="empty-state">
+            <div class="empty-icon">💬</div>
+            <h3>No Chat Selected</h3>
+            <p>Accept a project request to open a chat room.</p>
+            <a href="review_orders.html" class="btn btn-primary">Review Orders</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- RECEIPT MODAL -->
+<div class="modal-overlay" id="receiptModal">
+  <div class="modal-box" style="max-width:520px;">
+    <div class="modal-header"><h3>🧾 Send Receipt / Price Quote</h3><button class="modal-close">✕</button></div>
+    <div class="modal-body">
+      <div class="form-group">
+        <label class="form-label">Project Name (optional)</label>
+        <input type="text" id="rcProjectName" class="form-control" placeholder="e.g. Foundation Works — Phase 1">
+      </div>
+      <div class="form-group">
+        <label class="form-label">Line Items</label>
+        <div id="receiptItems">
+          <div class="receipt-item-row" style="display:grid;grid-template-columns:2fr 1fr auto;gap:.5rem;margin-bottom:.5rem;">
+            <input type="text" class="form-control ri-name" placeholder="Item name" value="Ready Mix Concrete (10 cu.m)">
+            <input type="number" class="form-control ri-price" placeholder="Price" value="15000" oninput="updateTotal()">
+            <button onclick="this.parentElement.remove();updateTotal();" class="btn btn-danger btn-sm">✕</button>
+          </div>
+        </div>
+        <button class="btn btn-ghost btn-sm" onclick="addReceiptItem()" style="margin-top:.35rem;">+ Add Item</button>
+      </div>
+      <div style="background:var(--surface-alt);border-radius:var(--radius-sm);padding:.85rem;">
+        <div style="display:flex;justify-content:space-between;font-weight:700;">
+          <span>TOTAL:</span><span id="receiptTotal">₱0.00</span>
+        </div>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-ghost" onclick="Modal.close('receiptModal')">Cancel</button>
+      <button class="btn btn-primary" onclick="sendReceipt()">Send Receipt</button>
+    </div>
+  </div>
+</div>
+
+<!-- MEETING MODAL -->
+<div class="modal-overlay" id="meetingModal">
+  <div class="modal-box" style="max-width:400px;">
+    <div class="modal-header"><h3>📅 Schedule Meeting</h3><button class="modal-close">✕</button></div>
+    <div class="modal-body">
+      <div class="form-group">
+        <label class="form-label">Meeting Details</label>
+        <textarea id="meetingDetails" class="form-control" rows="3" placeholder="Date, time, venue or video call link..."></textarea>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-ghost" onclick="Modal.close('meetingModal')">Cancel</button>
+      <button class="btn btn-primary" onclick="sendMeeting()">Send Invite</button>
+    </div>
+  </div>
+</div>
+
+<div id="toast-container"></div>
+<script src="../assets/js/utils.js"></script>
+<script src="../assets/js/admin-chat.js"></script>
+</body>
+</html>

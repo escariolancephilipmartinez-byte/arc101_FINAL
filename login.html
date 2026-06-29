@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Login — ARC101</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@600;700;800&family=Open+Sans:wght@400;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="assets/css/main.css">
+</head>
+<body>
+<div class="auth-page">
+  <div class="auth-card">
+    <div class="auth-card-header">
+      <img
+        src="assets/img/logo.png"
+        alt="ARC101 logo"
+        class="auth-logo-img"
+        onerror="this.outerHTML='<div style=\'font-size:2.5rem;margin-bottom:.5rem;\'>🏗️</div>'"
+      >
+      <h2>Welcome Back</h2>
+      <p style="opacity:.8;font-size:.88rem;margin:0;">Sign in to your ARC101 account</p>
+    </div>
+    <div class="auth-card-body">
+      <div id="errorMsg" class="alert alert-danger" style="display:none;"></div>
+      <div class="form-group">
+        <label class="form-label">Email Address <span class="required">*</span></label>
+        <input type="email" id="email" class="form-control" placeholder="you@example.com" autocomplete="email">
+      </div>
+      <div class="form-group">
+        <label class="form-label">Password <span class="required">*</span></label>
+        <input type="password" id="password" class="form-control" placeholder="••••••••" autocomplete="current-password">
+      </div>
+      <button class="btn btn-primary btn-block btn-lg" id="loginBtn" onclick="doLogin()">Sign In</button>
+      <div style="text-align:center;margin-top:1.25rem;font-size:.88rem;">
+        Don't have an account? <a href="register.html">Sign Up</a>
+      </div>
+      <div style="text-align:center;margin-top:.75rem;font-size:.8rem;color:var(--text-muted);">
+        Demo: <strong>customer@arc101.com</strong> / <strong>password</strong><br>
+        Admin: <strong>admin@arc101.com</strong> / <strong>password</strong>
+      </div>
+    </div>
+  </div>
+</div>
+<div id="toast-container"></div>
+<script src="assets/js/utils.js"></script>
+<script src="assets/js/login.js"></script>
+</body>
+</html>

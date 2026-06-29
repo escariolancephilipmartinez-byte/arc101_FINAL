@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Reports — ARC101 Admin</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@600;700;800&family=Open+Sans:wght@400;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+  <link rel="stylesheet" href="../assets/css/main.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.0/chart.umd.min.js"></script>
+</head>
+<body>
+
+<nav class="navbar">
+  <div class="container">
+    <a class="nav-brand" href="../index.html"><span class="brand-icon"><img src="../assets/img/logo.png" alt="ARC101 logo" class="brand-logo-img" onerror="this.replaceWith('🏗️')"></span><div>ARC101 <small>Readymix & Development Corp.</small></div></a>
+    <div class="nav-menu" id="navMenu">
+      <a href="dashboard.html" class="nav-link active">Admin Panel</a>
+      <a href="../logout.php" class="nav-link">Logout</a>
+    </div>
+    <button class="nav-toggle"><i class="fa fa-bars"></i></button>
+  </div>
+</nav>
+
+<div class="app-layout">
+  <aside class="sidebar" id="sidebar">
+    <div class="sidebar-logo">
+      <span class="logo-icon"><img src="../assets/img/logo.png" alt="ARC101 logo" style="height:28px;width:auto;" onerror="this.replaceWith('🏗️')"></span>
+      <div>
+        ARC101 <small>Admin Panel</small>
+      </div>
+    </div>
+    <nav class="sidebar-nav">
+      <a href="dashboard.html"     class="sidebar-link"><i class="fa fa-th-large"></i> Dashboard</a>
+      <a href="review_orders.html" class="sidebar-link"><i class="fa fa-clipboard-list"></i> Review Orders</a>
+      <a href="chat.html"          class="sidebar-link"><i class="fa fa-comments"></i> Chat</a>
+      <a href="reports.html"       class="sidebar-link active"><i class="fa fa-chart-bar"></i> Reports</a>
+      <div class="sidebar-section">System</div>
+      <a href="../index.html"      class="sidebar-link"><i class="fa fa-home"></i> View Website</a>
+    </nav>
+    <div class="sidebar-footer">
+      <a href="../logout.php" class="btn btn-ghost btn-sm" style="color:rgba(255,255,255,.7);border-color:rgba(255,255,255,.3);width:100%;justify-content:center;">Logout</a>
+    </div>
+  </aside>
+
+  <div class="app-main">
+    <div class="top-bar">
+      <div class="top-bar-left">
+        <button class="sidebar-toggle"><i class="fa fa-bars"></i></button>
+        <h4>Reports & Analytics</h4>
+      </div>
+    </div>
+
+    <div class="page-content">
+      <div style="margin-bottom:1.5rem;"><h2>Reports & Analytics</h2><p style="color:var(--text-muted);">Project statistics and business insights.</p></div>
+
+      <div class="stats-row">
+        <div class="stat-card"><div class="stat-value" id="sTot">—</div><div class="stat-label">Total Projects</div></div>
+        <div class="stat-card"><div class="stat-value" id="sAct">—</div><div class="stat-label">Active</div></div>
+        <div class="stat-card"><div class="stat-value" id="sDon">—</div><div class="stat-label">Completed</div></div>
+        <div class="stat-card"><div class="stat-value" id="sPen">—</div><div class="stat-label">Pending Review</div></div>
+      </div>
+
+      <div style="display:grid;grid-template-columns:2fr 1fr;gap:1.25rem;margin-bottom:1.5rem;" class="charts-grid">
+        <div class="card">
+          <div class="card-header"><h3>Monthly Project Submissions</h3></div>
+          <div class="card-body"><canvas id="monthlyChart" height="90"></canvas></div>
+        </div>
+        <div class="card">
+          <div class="card-header"><h3>Status Breakdown</h3></div>
+          <div class="card-body" style="display:flex;align-items:center;justify-content:center;">
+            <canvas id="statusChart" style="max-height:220px;"></canvas>
+          </div>
+        </div>
+      </div>
+
+      <div class="card" style="margin-bottom:1.5rem;">
+        <div class="card-header" style="flex-wrap:wrap;gap:.75rem;">
+          <h3>All Projects</h3>
+          <div style="display:flex;gap:.5rem;flex-wrap:wrap;">
+            <input type="text" id="tableSearch" class="form-control form-control-sm" placeholder="Search..." style="width:180px;" oninput="filterTable()">
+            <select id="tableFilter" class="form-control form-control-sm" style="width:150px;" onchange="filterTable()">
+              <option value="">All Statuses</option>
+              <option value="pending">Pending</option>
+              <option value="under_review">Under Review</option>
+              <option value="accepted">Accepted</option>
+              <option value="in_progress">In Progress</option>
+              <option value="completed">Completed</option>
+              <option value="rejected">Rejected</option>
+            </select>
+          </div>
+        </div>
+        <div class="card-body" style="padding:0;overflow-x:auto;">
+          <div id="projectsTable"><div class="loading-state"><div class="spinner"></div></div></div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-header"><h3>Most Requested Materials</h3></div>
+        <div class="card-body"><canvas id="materialsChart" height="80"></canvas></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div id="toast-container"></div>
+<script src="../assets/js/utils.js"></script>
+<script src="../assets/js/admin-reports.js"></script>
+</body>
+</html>

@@ -1,0 +1,7 @@
+/* dashboard.css — Extra styles for dashboard pages */
+@media (max-width: 992px) {
+  .charts-grid { grid-template-columns: 1fr !important; }
+}
+@media (max-width: 640px) {
+  .page-content { display: block !important; }
+}

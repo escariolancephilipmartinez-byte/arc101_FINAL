@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Services — ARC101</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@600;700;800&family=Open+Sans:wght@400;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+  <link rel="stylesheet" href="assets/css/main.css">
+  <link rel="stylesheet" href="assets/css/public.css">
+</head>
+<body>
+
+<nav class="navbar">
+  <div class="container">
+    <a class="nav-brand" href="index.html"><span class="brand-icon"><img src="assets/img/logo.png" alt="ARC101 logo" class="brand-logo-img" onerror="this.replaceWith('🏗️')"></span><div>ARC101 <small>Readymix & Development Corp.</small></div></a>
+    <div class="nav-menu" id="navMenu">
+      <a href="index.html"    class="nav-link">Home</a>
+      <a href="about.html"    class="nav-link">About</a>
+      <a href="services.html" class="nav-link active">Services</a>
+      <a href="login.html"    class="nav-btn" id="dashboardLink">My Dashboard</a>
+    </div>
+    <button class="nav-toggle" id="navToggle"><i class="fa fa-bars"></i></button>
+  </div>
+</nav>
+
+<div class="services-page">
+  <div class="container" style="max-width:780px;">
+    <div style="margin-bottom:2rem;">
+      <h1>Submit a Project Request</h1>
+      <p style="color:var(--text-muted);">Fill in your project details and our team will review and get back to you with a customized quote.</p>
+    </div>
+
+    <div id="authWarning" class="alert alert-info" style="display:none;">
+      You need to <a href="login.html"><strong>log in</strong></a> or <a href="register.html"><strong>register</strong></a> to submit a project request.
+    </div>
+
+    <div id="successMsg" class="alert alert-success" style="display:none;"></div>
+    <div id="errorMsg"   class="alert alert-danger"  style="display:none;"></div>
+
+    <div id="projectForm">
+      <!-- SECTION 1: Project Info -->
+      <div class="form-card" style="margin-bottom:1.25rem;">
+        <div class="form-card-header"><h3>📋 Project Information</h3></div>
+        <div class="form-card-body">
+          <div class="form-group">
+            <label class="form-label">Project Title <span class="required">*</span></label>
+            <input type="text" id="title" class="form-control" placeholder="e.g. House Foundation — Brgy. Sta. Rosa, Laguna">
+          </div>
+          <div class="form-group">
+            <label class="form-label">Project Address <span class="required">*</span></label>
+            <input type="text" id="project_address" class="form-control" placeholder="Street, Barangay, City, Province">
+          </div>
+        </div>
+      </div>
+
+      <!-- SECTION 2: Dimensions -->
+      <div class="form-card" style="margin-bottom:1.25rem;">
+        <div class="form-card-header"><h3>📐 Project Dimensions</h3></div>
+        <div class="form-card-body">
+          <label class="form-label" style="margin-bottom:.75rem;">How would you like to handle measurements?</label>
+          <div class="radio-grid" style="margin-bottom:1rem;">
+            <label class="radio-card">
+              <input type="radio" name="dimension_type" value="known" checked onchange="toggleDimFields()">
+              <div><strong>I know the dimensions</strong><br><span style="font-size:.82rem;color:var(--text-muted);">I'll provide sqm and type</span></div>
+            </label>
+            <label class="radio-card">
+              <input type="radio" name="dimension_type" value="measure" onchange="toggleDimFields()">
+              <div><strong>Request measurement</strong><br><span style="font-size:.82rem;color:var(--text-muted);">Our team will visit your site</span></div>
+            </label>
+          </div>
+          <div id="dimFields">
+            <div style="display:grid;grid-template-columns:1fr 1fr;gap:1rem;">
+              <div class="form-group" style="margin:0;">
+                <label class="form-label">Total Area (sqm)</label>
+                <input type="number" id="total_area" class="form-control" placeholder="e.g. 120" min="1">
+              </div>
+              <div class="form-group" style="margin:0;">
+                <label class="form-label">Structural Type</label>
+                <select id="structural_type" class="form-control">
+                  <option value="">— Select type —</option>
+                  <option>Residential Foundation</option>
+                  <option>Residential — Single Storey</option>
+                  <option>Residential — Multi Storey</option>
+                  <option>Commercial Slab</option>
+                  <option>Column &amp; Beam</option>
+                  <option>Retaining Wall</option>
+                  <option>Road / Pavement</option>
+                  <option>Other</option>
+                </select>
+              </div>
+            </div>
+          </div>
+          <div id="measureNote" style="display:none;" class="alert alert-info">ℹ️ Our team will contact you to schedule a site visit for accurate measurement.</div>
+        </div>
+      </div>
+
+      <!-- SECTION 3: Materials -->
+      <div class="form-card" style="margin-bottom:1.25rem;">
+        <div class="form-card-header"><h3>🧱 Required Materials</h3></div>
+        <div class="form-card-body">
+          <div class="checkbox-list">
+            <label class="checkbox-item"><input type="checkbox" name="materials" value="ready_mix_concrete"> Ready Mix Concrete</label>
+            <label class="checkbox-item"><input type="checkbox" name="materials" value="cement"> Cement</label>
+            <label class="checkbox-item">
+              <input type="checkbox" name="materials" value="aggregates" id="matAgg" onchange="toggleSub('subAgg', this)">
+              Aggregates
+            </label>
+            <div class="sub-options checkbox-list" id="subAgg" style="display:none;">
+              <label class="checkbox-item"><input type="checkbox" name="agg_types" value="sand"> Industrial Sand</label>
+              <label class="checkbox-item"><input type="checkbox" name="agg_types" value="gravel"> Gravel</label>
+              <label class="checkbox-item"><input type="checkbox" name="agg_types" value="crushed_stone"> Crushed Stone</label>
+            </div>
+            <label class="checkbox-item">
+              <input type="checkbox" name="materials" value="chemical_admixtures" id="matChem" onchange="toggleSub('subChem', this)">
+              Chemical Admixtures
+            </label>
+            <div class="sub-options checkbox-list" id="subChem" style="display:none;">
+              <label class="checkbox-item"><input type="checkbox" name="chem_types" value="plasticizer"> Plasticizer</label>
+              <label class="checkbox-item"><input type="checkbox" name="chem_types" value="retarder"> Retarder</label>
+              <label class="checkbox-item"><input type="checkbox" name="chem_types" value="accelerator"> Accelerator</label>
+            </div>
+          </div>
+          <div class="form-group" style="margin-top:1rem;margin-bottom:0;">
+            <label class="form-label">Other Materials (optional)</label>
+            <input type="text" id="other_materials" class="form-control" placeholder="e.g. Steel reinforcement bars, Hollow blocks">
+          </div>
+        </div>
+      </div>
+
+      <!-- SECTION 4: Files -->
+      <div class="form-card" style="margin-bottom:1.25rem;">
+        <div class="form-card-header"><h3>📎 Project Plans / Files</h3></div>
+        <div class="form-card-body">
+          <div class="dropzone" id="dropzone" onclick="document.getElementById('planFiles').click()">
+            <div style="font-size:2rem;margin-bottom:.5rem;">📁</div>
+            <p style="margin:0;color:var(--text-muted);font-size:.9rem;">Drag & drop files here or <strong style="color:var(--primary);">click to browse</strong></p>
+            <p style="font-size:.78rem;color:var(--text-muted);margin:.25rem 0 0;">JPG, PNG, PDF, DWG — max 10MB each</p>
+          </div>
+          <input type="file" id="planFiles" multiple accept="image/*,.pdf,.dwg" style="display:none;" onchange="handleFiles(this.files)">
+          <div style="margin-top:.75rem;display:flex;gap:.75rem;align-items:center;flex-wrap:wrap;">
+            <button type="button" class="btn btn-ghost btn-sm" onclick="openCameraForPlan()">
+              📷 Take Photo of Plan
+            </button>
+            <span style="font-size:.8rem;color:var(--text-muted);">or drag & drop / click above to browse files</span>
+          </div>
+          <div class="preview-grid" id="filePreview"></div>
+        </div>
+      </div>
+
+      <!-- SECTION 5: Specs -->
+      <div class="form-card" style="margin-bottom:1.5rem;">
+        <div class="form-card-header"><h3>📝 Additional Specifications</h3></div>
+        <div class="form-card-body">
+          <div class="form-group" style="margin:0;">
+            <textarea id="additional_specs" class="form-control" rows="4" placeholder="Any special requirements, preferred brands, project timeline, or other important notes for our team..."></textarea>
+          </div>
+        </div>
+      </div>
+
+      <button class="btn btn-primary btn-block btn-lg" id="submitBtn" onclick="submitProject()">
+        Submit Project for Review
+      </button>
+      <p style="text-align:center;font-size:.82rem;color:var(--text-muted);margin-top:.75rem;">Our team will review your request and respond within 24-48 hours.</p>
+    </div>
+  </div>
+</div>
+
+<div id="toast-container"></div>
+<script src="assets/js/utils.js"></script>
+<script src="assets/js/services.js"></script>
+</body>
+</html>
