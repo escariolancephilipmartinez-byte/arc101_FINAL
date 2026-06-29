@@ -288,7 +288,11 @@ APK output: `platforms/android/app/build/outputs/apk/debug/app-debug.apk`
 
 ## 👥 Team
 
-BSCpE Students — Polytechnic University of the Philippines  
+Aldaya, Charlene R.  
+Clavo, Zyrus C.  
+Escario, Lance Philip M.  
+Sta. Ana, Nicole Decemae M.  
+BSCpE 3-6 Students — Polytechnic University of the Philippines  
 Final Project — Web and Mobile Systems (2026)
 
 ---
